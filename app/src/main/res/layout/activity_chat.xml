@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:ads="http://schemas.android.com/apk/res-auto"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorBack"
+    android:orientation="vertical"
+    tools:context=".activities.ChatActivity">
+
+    <ImageView
+        android:id="@+id/emojiButton"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_above="@id/chatAdView"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
+        android:padding="4dp"
+        android:src="@mipmap/smiley" />
+
+    <ImageView
+        android:id="@+id/submitButton"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_above="@id/chatAdView"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:padding="4dp"
+        android:src="@android:drawable/ic_menu_send" />
+
+    <ImageView
+        android:id="@+id/addMediaButton"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_above="@id/chatAdView"
+        android:layout_toStartOf="@id/submitButton"
+        android:layout_toLeftOf="@id/submitButton"
+        android:padding="4dp"
+        android:src="@drawable/ic_add_media_button" />
+
+    <hani.momanii.supernova_emoji_library.Helper.EmojiconEditText
+        android:id="@+id/textField"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/chatAdView"
+        android:layout_toStartOf="@id/addMediaButton"
+        android:layout_toLeftOf="@+id/addMediaButton"
+        android:layout_toEndOf="@+id/emojiButton"
+        android:layout_toRightOf="@+id/emojiButton"
+        app:emojiconSize="29sp" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerOfMessages"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/textField"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginBottom="16dp"
+        android:divider="@android:color/transparent"
+        android:dividerHeight="16dp"
+        android:stackFromBottom="true"
+        android:transcriptMode="alwaysScroll"/>
+
+    <!-- test-only adUnitId: ca-app-pub-3940256099942544/6300978111
+         my own adUnitId: ca-app-pub-9943274217982226/9618846900 -->
+    <com.google.android.gms.ads.AdView
+        android:id="@+id/chatAdView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        ads:adSize="SMART_BANNER"
+        ads:adUnitId="ca-app-pub-9943274217982226/9618846900" />
+</RelativeLayout>

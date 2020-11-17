@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "415585297029",
+    "firebase_url": "https://tchat-1157a.firebaseio.com",
+    "project_id": "tchat-1157a",
+    "storage_bucket": "tchat-1157a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:415585297029:android:10b2995df0100f4f2e7fec",
+        "android_client_info": {
+          "package_name": "com.wampapps.tchat"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "415585297029-ajmdpo4ugndgdp7l7g995ldbksn143g7.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.wampapps.tchat",
+            "certificate_hash": "65f116c7604095aabbdbbc37e9ee09d10a9ecf37"
+          }
+        },
+        {
+          "client_id": "415585297029-ph1iuccmq45urjg4vvsdtquj0fhb5m8u.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCcAdw9yljqIDXw9RFUomwrXe_SVSRTric"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "415585297029-ph1iuccmq45urjg4vvsdtquj0fhb5m8u.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

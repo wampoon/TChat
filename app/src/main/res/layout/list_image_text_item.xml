@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <!-- USER LEFT -->
+    <TextView
+        android:id="@+id/userLeftText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/messageText"
+        android:layout_centerHorizontal="true"
+        android:text="Пользователь отключился"
+        android:visibility="gone" />
+
+    <!-- USER LAYOUT -->
+    <TextView
+        android:id="@+id/messageUser"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:textStyle="normal|bold"/>
+
+    <TextView
+        android:id="@+id/messageTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="5dp"/>
+
+    <ImageView
+        android:id="@+id/messageImage"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:layout_below="@id/messageInterlocutorUser"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginStart="0dp"
+        android:layout_marginLeft="0dp"
+        android:layout_marginTop="-2dp"
+        android:adjustViewBounds="true"
+        android:padding="10dp"
+        android:scaleType="fitCenter"
+        android:src="@drawable/ic_image_black"
+        android:visibility="visible" />
+
+    <com.github.library.bubbleview.BubbleTextView
+        android:id="@+id/messageText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/messageInterlocutorUser"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="5dp"
+        android:padding="10dp"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+        android:textColor="#fff"
+        android:textSize="18sp"
+        app:angle="8dp"
+        app:arrowCenter="false"
+        app:arrowHeight="10dp"
+        app:arrowLocation="left"
+        app:arrowPosition="10dp"
+        app:arrowWidth="8dp"
+        app:bubbleColor="@color/colorAccent" />
+
+    <!-- INTERLOCUTOR LAYOUT -->
+    <TextView
+        android:id="@+id/messageInterlocutorUser"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
+        android:textStyle="normal|bold"/>
+
+    <TextView
+        android:id="@+id/messageInterlocutorTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
+        android:layout_marginTop="5dp"/>
+
+    <ImageView
+        android:id="@+id/messageInterlocutorImage"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:layout_below="@id/messageUser"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
+        android:layout_marginStart="0dp"
+        android:layout_marginLeft="0dp"
+        android:layout_marginTop="-2dp"
+        android:adjustViewBounds="true"
+        android:padding="10dp"
+        android:scaleType="fitCenter"
+        android:src="@drawable/ic_image_black"
+        android:visibility="visible" />
+
+    <com.github.library.bubbleview.BubbleTextView
+        android:id="@+id/messageInterlocutorText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/messageUser"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
+        android:layout_marginTop="5dp"
+        android:padding="10dp"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+        android:textColor="#fff"
+        android:textSize="18sp"
+        app:angle="8dp"
+        app:arrowCenter="false"
+        app:arrowHeight="10dp"
+        app:arrowLocation="left"
+        app:arrowPosition="10dp"
+        app:arrowWidth="8dp"
+        app:bubbleColor="#457B9D" />
+</RelativeLayout>
