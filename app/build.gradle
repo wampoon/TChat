@@ -11,8 +11,8 @@ android {
         applicationId "com.wampapps.tchat"
         minSdkVersion 16
         targetSdkVersion 30
-        versionCode 5
-        versionName "TChat_update_added_text_disabler"
+        versionCode 6
+        versionName "TChat_update_added_online_counter_and_text_reminder_in_SearchActivity"
         multiDexEnabled true
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
