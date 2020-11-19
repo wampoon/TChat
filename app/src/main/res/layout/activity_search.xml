@@ -22,9 +22,11 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/loadingPicture"
         android:layout_centerHorizontal="true"
-        android:text="Мы дадим знать, когда собеседник будет найден ;)"
+        android:text="Мы дадим знать, когда собеседник будет найден ;)\nИногда поиск может занять некоторое время"
         android:layout_marginTop="4sp"
-        android:textSize="14sp" />
+        android:textSize="14sp"
+        android:textAlignment="center"
+        android:gravity="center_horizontal" />
 
     <!-- test-only adUnitId: ca-app-pub-3940256099942544/6300978111
          my own adUnitId: ca-app-pub-9943274217982226/9618846900 -->

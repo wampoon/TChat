@@ -7,6 +7,7 @@ import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.MutableLiveData
 import com.wampapps.tchat.R
@@ -34,6 +35,7 @@ class SearchActivity : AppCompatActivity() {
     private lateinit var loadingText: TextView
     private lateinit var loadingPicture: ImageView
     private lateinit var toChatButton: Button
+    private lateinit var actionBar: ActionBar
 
     private lateinit var adView: AdView
 
@@ -49,6 +51,10 @@ class SearchActivity : AppCompatActivity() {
         adView = findViewById(R.id.searchAdView)
         val adRequest: AdRequest = AdRequest.Builder().build()
         adView.loadAd(adRequest)
+
+        actionBar = this.supportActionBar!!
+        actionBar.title = "Онлайн:"
+        actionBar.show()
 
         loadingPicture = findViewById(R.id.loadingPicture)
         loadingText = findViewById(R.id.loadingText)
@@ -72,6 +78,12 @@ class SearchActivity : AppCompatActivity() {
                 chatCounter++
             }
 
+        db.collection("Users")
+            .addSnapshotListener { value, _ ->
+                if (value != null) {
+                    actionBar.title = "Онлайн: ${value.size()}"
+                }
+            }
         toChatButton.setOnClickListener {
             val intent = Intent(this, ChatActivity::class.java)
             val extras = Bundle()
