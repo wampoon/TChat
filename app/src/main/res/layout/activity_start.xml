@@ -19,8 +19,6 @@
         android:text="Поиск"
         android:textColor="#FFFFFF" />
 
-    <!-- test-only adUnitId: ca-app-pub-3940256099942544/6300978111
-         my own adUnitId: ca-app-pub-9943274217982226/9618846900 -->
     <com.google.android.gms.ads.AdView
         android:id="@+id/startAdView"
         android:layout_width="wrap_content"

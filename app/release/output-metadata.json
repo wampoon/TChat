@@ -10,8 +10,8 @@
     {
       "type": "SINGLE",
       "filters": [],
-      "versionCode": 5,
-      "versionName": "TChat_update_added_text_disabler",
+      "versionCode": 11,
+      "versionName": "TChat_update_description",
       "outputFile": "app-release.apk"
     }
   ]
