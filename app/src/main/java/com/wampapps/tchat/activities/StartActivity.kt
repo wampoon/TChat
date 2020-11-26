@@ -1,15 +1,11 @@
 package com.wampapps.tchat.activities
 
-import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
-import android.view.View
 import android.widget.Button
-import android.widget.RadioGroup
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.wampapps.tchat.R
-import com.wampapps.tchat.search.InterlocutorInfo
 import com.wampapps.tchat.search.UserInfo
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.AdView
@@ -28,14 +24,9 @@ class StartActivity : AppCompatActivity() {
 
     private lateinit var mAuth: FirebaseAuth
 
-    private lateinit var searchButton: Button;
-    private lateinit var userGenderRadio: RadioGroup
-    private lateinit var userAgeRadio: RadioGroup
-    private lateinit var interlocutorGenderRadio: RadioGroup
-    private lateinit var interlocutorAgeRadio: RadioGroup
+    private lateinit var searchButton: Button
 
     var user = UserInfo()
-    var interlocutor = UserInfo()
     private var userPushId: String = UUID.randomUUID().toString()
 
     private var db: FirebaseFirestore = FirebaseFirestore.getInstance()
@@ -116,25 +107,6 @@ class StartActivity : AppCompatActivity() {
                 .addOnFailureListener {
                     Toast.makeText(this, it.message, Toast.LENGTH_LONG).show()
                 }
-        }
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if(requestCode == SIGN_IN_CODE){
-            if(resultCode == Activity.RESULT_OK){
-                Toast.makeText(this@StartActivity, "Вы вошли", Toast.LENGTH_SHORT).show()
-            }else{
-                Toast.makeText(this@StartActivity, "Вы не вошли", Toast.LENGTH_SHORT).show()
-
-                searchButton.visibility = View.GONE
-                userGenderRadio.visibility = View.GONE
-                userAgeRadio.visibility = View.GONE
-                interlocutorGenderRadio.visibility = View.GONE
-                interlocutorAgeRadio.visibility = View.GONE
-
-                finish()
-            }
         }
     }
 }

@@ -103,38 +103,40 @@ class ChatActivity : AppCompatActivity() {
         manager.stackFromEnd = true
         recyclerMessages.layoutManager = manager
 
-        val collectionListener = dbRefChats.document(chatId).collection("messages")
-        collectionListener.addSnapshotListener{value: QuerySnapshot?, error: FirebaseFirestoreException? ->
-            if (error != null) {
-                Toast.makeText(this, "ERROR: ${error.message}", Toast.LENGTH_SHORT).show()
-                return@addSnapshotListener
-            }
-
-            for(dc in value!!.documentChanges){
-                when(dc.type){
-                    ADDED -> {
-                        val message: Message = hashToMessage(dc.document.data)
-                        messages.add(message)
-
-                        if(message.getTypeMessage()=="disconnect"){
-                            emojiButton.visibility = View.GONE
-                            emojiconEditText.visibility = View.GONE
-                            addMediaButton.visibility = View.GONE
-                            submitButton.visibility = View.GONE
-                        }
-                    }
-                    MODIFIED -> {}
-                    REMOVED -> {}
+        dbRefChats
+            .document(chatId)
+            .collection("messages")
+            .addSnapshotListener{value: QuerySnapshot?, error: FirebaseFirestoreException? ->
+                if (error != null) {
+                    Toast.makeText(this, "ERROR: ${error.message}", Toast.LENGTH_SHORT).show()
+                    return@addSnapshotListener
                 }
-            }
-            val adapter = MessageDataAdapter(
-                this@ChatActivity,
-                messages,
-                user.getUserId().toString()
-            )
-            adapter.notifyDataSetChanged()
 
-            recyclerMessages.adapter=adapter
+                for(dc in value!!.documentChanges){
+                    when(dc.type){
+                        ADDED -> {
+                            val message: Message = hashToMessage(dc.document.data)
+                            messages.add(message)
+
+                            if(message.getTypeMessage()=="disconnect"){
+                                emojiButton.visibility = View.GONE
+                                emojiconEditText.visibility = View.GONE
+                                addMediaButton.visibility = View.GONE
+                                submitButton.visibility = View.GONE
+                            }
+                        }
+                        MODIFIED -> {}
+                        REMOVED -> {}
+                    }
+                }
+                val adapter = MessageDataAdapter(
+                    this@ChatActivity,
+                    messages,
+                    user.getUserId().toString()
+                )
+                adapter.notifyDataSetChanged()
+
+                recyclerMessages.adapter=adapter
         }
 
         submitButton.setOnClickListener {

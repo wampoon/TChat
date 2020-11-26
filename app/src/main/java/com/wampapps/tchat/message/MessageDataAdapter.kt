@@ -1,5 +1,6 @@
 package com.wampapps.tchat.message
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Build
 import android.view.LayoutInflater
@@ -104,6 +105,7 @@ class MessageDataAdapter: RecyclerView.Adapter<MessageViewHolder> {
         holder.interlocutorTime.text = convertLongToTime(message.getMessageTime()!!)
     }
 
+    @SuppressLint("SimpleDateFormat")
     private fun convertLongToTime(time: Long): String{
         val date = Date(time)
         val format = SimpleDateFormat("dd/M/yyyy hh:mm:ss")

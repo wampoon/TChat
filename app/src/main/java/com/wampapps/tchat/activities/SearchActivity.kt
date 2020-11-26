@@ -21,7 +21,6 @@ import java.util.*
 class SearchActivity : AppCompatActivity() {
 
     private var db: FirebaseFirestore = FirebaseFirestore.getInstance()
-    private var dbRefChats: CollectionReference = db.collection("Chats")
     private var dbRefUsers: CollectionReference = db.collection("Users")
 
     private lateinit var arguments: Bundle
@@ -30,7 +29,6 @@ class SearchActivity : AppCompatActivity() {
 
     private lateinit var chatId: String
     private var userRole: String = ""
-    private var chatCounter = 0
 
     private lateinit var loadingText: TextView
     private lateinit var loadingPicture: ImageView
@@ -62,7 +60,7 @@ class SearchActivity : AppCompatActivity() {
 
         toChatButton.visibility = View.GONE
 
-        db.collection("Users")
+        dbRefUsers
             .document(userPushId)
             .addSnapshotListener { value, _ ->
                 if(value!= null && value.exists()){
@@ -74,16 +72,15 @@ class SearchActivity : AppCompatActivity() {
                         toChatButton.visibility = View.VISIBLE
                     }
                 }
-
-                chatCounter++
             }
 
-        db.collection("Users")
+        dbRefUsers
             .addSnapshotListener { value, _ ->
                 if (value != null) {
                     actionBar.title = "Онлайн: ${value.size()}"
                 }
             }
+
         toChatButton.setOnClickListener {
             val intent = Intent(this, ChatActivity::class.java)
             val extras = Bundle()

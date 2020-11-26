@@ -15,38 +15,40 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
-        <!-- Sample AdMob App ID: ca-app-pub-3940256099942544~3347511713-->
+        <!-- Sample AdMob App ID: ca-app-pub-3940256099942544~3347511713 -->
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"
-            android:value="ca-app-pub-9943274217982226~6154761538"/>
+            android:value="ca-app-pub-9943274217982226~6154761538" />
 
         <activity
-            android:name="com.wampapps.tchat.activities.StartActivity"
+            android:name=".activities.StartActivity"
             android:hardwareAccelerated="true"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
 
         <activity
-            android:name="com.wampapps.tchat.activities.SearchActivity"
+            android:name=".activities.SearchActivity"
             android:hardwareAccelerated="true"
             android:screenOrientation="portrait">
+
         </activity>
 
         <activity
-            android:name="com.wampapps.tchat.activities.ChatActivity"
-            android:windowSoftInputMode="stateHidden"
+            android:name=".activities.ChatActivity"
             android:hardwareAccelerated="true"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.APP_MESSAGING" />
             </intent-filter>
         </activity>
-
     </application>
 
 </manifest>
