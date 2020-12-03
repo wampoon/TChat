@@ -27,6 +27,7 @@ class MessageDataAdapter: RecyclerView.Adapter<MessageViewHolder> {
         this.inflater = LayoutInflater.from(context)
         this.userId = userId
     }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MessageViewHolder {
         val view: View = inflater.inflate(R.layout.list_image_text_item, parent, false)
 
@@ -38,6 +39,7 @@ class MessageDataAdapter: RecyclerView.Adapter<MessageViewHolder> {
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
+    //mainly gets the message type and changes the views to get a correct display
     override fun onBindViewHolder(holder: MessageViewHolder, position: Int) {
         val message: Message = messagesList[position]
 

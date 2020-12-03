@@ -19,7 +19,6 @@ import com.google.firebase.firestore.FirebaseFirestore
 import java.util.*
 
 class SearchActivity : AppCompatActivity() {
-
     private var db: FirebaseFirestore = FirebaseFirestore.getInstance()
     private var dbRefUsers: CollectionReference = db.collection("Users")
 
@@ -42,24 +41,30 @@ class SearchActivity : AppCompatActivity() {
 
         setContentView(R.layout.activity_search)
 
+        //getting extras
         arguments = intent.extras!!
         user = arguments.getSerializable(UserInfo::class.java.simpleName) as UserInfo
         userPushId = arguments.getSerializable("userPushId").toString()
 
+        //initializing ads
         adView = findViewById(R.id.searchAdView)
         val adRequest: AdRequest = AdRequest.Builder().build()
         adView.loadAd(adRequest)
 
+        //used to display number of users online
         actionBar = this.supportActionBar!!
         actionBar.title = "Онлайн:"
         actionBar.show()
 
+        //assigning views with variables
         loadingPicture = findViewById(R.id.loadingPicture)
         loadingText = findViewById(R.id.loadingText)
         toChatButton = findViewById(R.id.toChatButton)
 
         toChatButton.visibility = View.GONE
 
+        //listener that triggers when a userCurrentChat is changed. That means an interlocutor was
+        //found for this user
         dbRefUsers
             .document(userPushId)
             .addSnapshotListener { value, _ ->
@@ -74,6 +79,7 @@ class SearchActivity : AppCompatActivity() {
                 }
             }
 
+        //getting a number of online user at the moment
         dbRefUsers
             .addSnapshotListener { value, _ ->
                 if (value != null) {
@@ -81,6 +87,7 @@ class SearchActivity : AppCompatActivity() {
                 }
             }
 
+        //button that starts new activity. Works(becomes visible) only if chat was found
         toChatButton.setOnClickListener {
             val intent = Intent(this, ChatActivity::class.java)
             val extras = Bundle()

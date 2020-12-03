@@ -17,11 +17,6 @@ import java.util.*
 
 
 class StartActivity : AppCompatActivity() {
-
-    private companion object{
-        const val SIGN_IN_CODE: Int = 1
-    }
-
     private lateinit var mAuth: FirebaseAuth
 
     private lateinit var searchButton: Button
@@ -36,32 +31,41 @@ class StartActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        //initializing ads here
         MobileAds.initialize(this){}
 
         setContentView(R.layout.activity_start)
 
+        //getting current user
         mAuth = FirebaseAuth.getInstance()
 
+        //assigning views with variables
         searchButton = findViewById(R.id.searchButton)
 
         adView = findViewById(R.id.startAdView)
+
+        //getting an ad and loading it
         val adRequest: AdRequest = AdRequest.Builder().build()
         adView.loadAd(adRequest)
 
+        //setting up a user
         user.setUserId(userPushId)
         user.setUserStatus("free")
 
         searchButton.setOnClickListener {
-            val intent: Intent = Intent(this, SearchActivity::class.java)
+            val intent = Intent(this, SearchActivity::class.java)
             val extras = Bundle()
             extras.putSerializable(UserInfo::class.java.simpleName, user)
 
+            //setting up a user
             user.setUserCurrentChat("")
             user.setUserRole("")
             user.setUserTimeEntered(Date().time)
 
+            //uploading a user's node to the database
             db.collection("Users").document(userPushId).set(user)
 
+            //keeping a user's id(in this case pushId==id)
             extras.putString("userPushId", userPushId)
             intent.putExtras(extras)
             startActivity(intent)
@@ -93,6 +97,7 @@ class StartActivity : AppCompatActivity() {
         super.onDestroy()
     }
 
+    //found in web, used for logging in
     private fun updateUI(currentUser: FirebaseUser?) {
         if(currentUser == null){
             mAuth.signInAnonymously()

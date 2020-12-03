@@ -78,12 +78,14 @@ class ChatActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        //getting extras from previous activity
         arguments = intent.extras!!
         user = arguments.getSerializable(UserInfo::class.java.simpleName) as UserInfo
         userPushId = arguments.getSerializable("userPushId").toString()
         chatId = arguments.getSerializable("chatId").toString()
         userRole = arguments.getSerializable("userRole").toString()
 
+        //setting up ad and assigning views to variables
         setContentView(R.layout.activity_chat)
 
         adView = findViewById(R.id.chatAdView)
@@ -103,6 +105,8 @@ class ChatActivity : AppCompatActivity() {
         manager.stackFromEnd = true
         recyclerMessages.layoutManager = manager
 
+        //if new node is added to _/chatId/messages performs some checks and adds a message
+        //to the array of messages
         dbRefChats
             .document(chatId)
             .collection("messages")
@@ -112,12 +116,15 @@ class ChatActivity : AppCompatActivity() {
                     return@addSnapshotListener
                 }
 
+                //here are checks mentioned earlier
                 for(dc in value!!.documentChanges){
                     when(dc.type){
                         ADDED -> {
+                            //adds previously converted messages to the corresponding array
                             val message: Message = hashToMessage(dc.document.data)
                             messages.add(message)
 
+                            //hides views so that user has no ability to send more messages
                             if(message.getTypeMessage()=="disconnect"){
                                 emojiButton.visibility = View.GONE
                                 emojiconEditText.visibility = View.GONE
@@ -125,10 +132,13 @@ class ChatActivity : AppCompatActivity() {
                                 submitButton.visibility = View.GONE
                             }
                         }
+                        //if messages are somehow deleted or modified while dialog nothing changes
                         MODIFIED -> {}
                         REMOVED -> {}
                     }
                 }
+
+                //updates the adapter and displays new messages
                 val adapter = MessageDataAdapter(
                     this@ChatActivity,
                     messages,
@@ -140,10 +150,13 @@ class ChatActivity : AppCompatActivity() {
         }
 
         submitButton.setOnClickListener {
+            //if no image was selected send a text message
             if(image_rui==null) {
+                //empty message check
                 if(emojiconEditText.text.toString() == ""){
                     Toast.makeText(this, "Введите сообщение", Toast.LENGTH_LONG).show()
                 }else {
+                    //uploading a message node to database
                     db.collection("Chats").document(chatId).collection("messages")
                         .add(
                             Message(
@@ -161,7 +174,9 @@ class ChatActivity : AppCompatActivity() {
 
                     emojiconEditText.setText("")
                 }
-            }else{
+            }
+            //if image was selected uploads it with corresponding function
+            else{
                 uploadImage(image_rui)
 
                 addMediaButton.setImageResource(R.drawable.ic_add_media_button)
@@ -193,15 +208,18 @@ class ChatActivity : AppCompatActivity() {
         adView.destroy()
 
         super.onDestroy()
+        //updates nodes in database to make user available in search
         dbRefUsers.document(userPushId).update("userCurrentChat", "")
         dbRefUsers.document(userPushId).update("userStatus", "free")
 
+        //updating user's chat node to trigger a cleaner
         if(userRole == "user"){
             dbRefChats.document(chatId).update("userId", "")
         }else{
             dbRefChats.document(chatId).update("interlocutorId", "")
         }
 
+        //sends a message with specific type so that adapter would be able to deal with it
         dbRefChats.document(chatId).collection("messages")
             .add(Message(
                 "",
@@ -209,10 +227,14 @@ class ChatActivity : AppCompatActivity() {
                 "disconnect"
             ))
 
+        //cleans a variable to get rid of possible troubles
         chatId = ""
     }
 
+    //uploads an image to Firebase Storage and sends a message
     private fun uploadImage(uri: Uri?) {
+
+        //progress dialog setup and display
         val progressDialog=ProgressDialog(this)
         progressDialog.setTitle("Загрузка")
         progressDialog.show()
@@ -220,19 +242,25 @@ class ChatActivity : AppCompatActivity() {
         val path:String = Date().time.toString()
         val ref:StorageReference = FirebaseStorage.getInstance().reference.child("images/$path")
 
+        //converting image to bitmap
         val bmp: Bitmap = MediaStore.Images.Media.getBitmap(contentResolver, image_rui)
+        //compressing a converted image and converting it to ByteArray
         val baos = ByteArrayOutputStream()
         bmp.compress(Bitmap.CompressFormat.JPEG, 20, baos)
         val data: ByteArray = baos.toByteArray()
 
+        //uploading an image to storage
         ref.putBytes(data)
             .addOnSuccessListener {
                 progressDialog.dismiss()
 
+                //if uploading would be successful we need to get a downloading Uri so that
+                //adapter would be able to display the picture
                 val uriTask: Task<Uri> = it.storage.downloadUrl
                 while(!uriTask.isSuccessful);
                 val downloadUri:String =uriTask.result.toString()
 
+                //when uploading is finished we need to send a message with specific parameters
                 if(uriTask.isSuccessful){
                     db.collection("Chats").document(chatId).collection("messages")
                         .add(Message(
@@ -257,9 +285,11 @@ class ChatActivity : AppCompatActivity() {
                 progressDialog.setMessage("Загружено "+progress.toInt()+"%...")
             }
 
+        //after uploading we need to change an image upload button
         addMediaButton.setImageResource(R.drawable.ic_add_media_button)
     }
 
+    //helps to transform a HashMap to a Message class object
     private fun hashToMessage(map: MutableMap<String, Any>): Message{
         return Message(
             map.getValue("messageUserId") as String,
@@ -268,6 +298,7 @@ class ChatActivity : AppCompatActivity() {
         )
     }
 
+    //displays a dialog to let user choose where from to get an image
     private fun showMediaPickDialog() {
         val options: Array<String> = arrayOf("Камеры", "Галереи")
 
@@ -288,6 +319,7 @@ class ChatActivity : AppCompatActivity() {
         builder.create().show()
     }
 
+    //opens a gallery to pick an image
     private fun pickFromGallery() {
         val intent =Intent(Intent.ACTION_PICK)
         intent.type = "image/*"
@@ -296,11 +328,14 @@ class ChatActivity : AppCompatActivity() {
         )
     }
 
+    //opens a camera to take a picture
     private fun pickFromCamera() {
         val cv = ContentValues()
 
+        //image rui setup
         image_rui = contentResolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, cv)!!
 
+        //opens a camera window and gets a rui
         val intent =Intent(MediaStore.ACTION_IMAGE_CAPTURE)
         intent.putExtra(MediaStore.EXTRA_OUTPUT, image_rui)
         startActivityForResult(intent,
@@ -308,17 +343,20 @@ class ChatActivity : AppCompatActivity() {
         )
     }
 
+    //checks if storage access is permitted
     private fun checkStoragePermission():Boolean{
         return ContextCompat.checkSelfPermission(this,
             Manifest.permission.WRITE_EXTERNAL_STORAGE)==(PackageManager.PERMISSION_GRANTED)
     }
 
+    //requests storage permission
     private fun requestStoragePermission(){
         ActivityCompat.requestPermissions(this, storagePermissions,
             STORAGE_REQUEST_CODE
         )
     }
 
+    //checks camera permission
     private fun checkCameraPermission():Boolean{
         val result:Boolean=ContextCompat.checkSelfPermission(this,
             Manifest.permission.CAMERA)==(PackageManager.PERMISSION_GRANTED)
@@ -328,6 +366,7 @@ class ChatActivity : AppCompatActivity() {
         return result&&result1
     }
 
+    //requests camera permission
     private fun requestCameraPermission(){
         ActivityCompat.requestPermissions(this, cameraPermissions,
             CAMERA_REQUEST_CODE
@@ -337,6 +376,7 @@ class ChatActivity : AppCompatActivity() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
+        //if image was picked from storage gets it Uri. Changes image pick button anyway
         if(resultCode == Activity.RESULT_OK){
             if(requestCode == IMAGE_PICK_STORAGE_CODE){
                 image_rui = data?.data!!
@@ -351,6 +391,7 @@ class ChatActivity : AppCompatActivity() {
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
 
+        //notifies user when storage or camera permission is necessary
         when (requestCode){
             CAMERA_REQUEST_CODE -> {
                 if(grantResults.isNotEmpty()){
